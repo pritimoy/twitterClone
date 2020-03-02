@@ -27,7 +27,10 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+
     implementation "com.github.parse-community.Parse-SDK-Android:parse:1.21.0"
+    implementation 'com.github.Shashank02051997:FancyToast-Android:0.1.6'
+    implementation 'com.google.android.material:material:1.0.0'
 
 }
 repositories {
