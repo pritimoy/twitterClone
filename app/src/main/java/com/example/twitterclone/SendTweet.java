@@ -1,16 +1,16 @@
 package com.example.twitterclone;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
-import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -71,11 +71,12 @@ public class SendTweet extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        Log.i("MYTAG","Clicked");
         final ArrayList<HashMap<String, String>> tweetList = new ArrayList<>();
         final SimpleAdapter adapter = new SimpleAdapter(SendTweet.this, tweetList, android.R.layout.simple_list_item_2, new String[]{"tweetUserName", "tweetValue"}, new int[]{android.R.id.text1, android.R.id.text2});
         try {
             ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("MyTweet");
-            parseQuery.whereContainedIn("user", ParseUser.getCurrentUser().getList("myfolower"));
+            parseQuery.whereContainedIn("user", ParseUser.getCurrentUser().getList("myfollower"));
             parseQuery.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
