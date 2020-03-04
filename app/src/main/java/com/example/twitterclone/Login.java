@@ -42,6 +42,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
 
+        //check the user already logged in or not
+        if(ParseUser.getCurrentUser() != null){
+
+            //goto MainActivity
+            transitionToManiActivity();
+        }
+
     }
 
     @Override
@@ -78,5 +85,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
         }
 
+    }
+
+
+    private  void transitionToManiActivity(){
+        Intent intent = new Intent(Login.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
