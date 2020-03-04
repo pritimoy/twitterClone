@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
@@ -56,6 +58,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             tUsers.add(twitterUser.getUsername());
                         }
                         listView.setAdapter(adapter);
+                        for (String twitterUser : tUsers){
+                            if (ParseUser.getCurrentUser().getList("myfollower") != null){
+                                if (ParseUser.getCurrentUser().getList("myfollower").contains(twitterUser)){
+                                    listView.setItemChecked(tUsers.indexOf(twitterUser), true);
+                                }
+                            }
+
+                        }
                     }
                 }
             });
@@ -78,7 +88,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()){
 
             case R.id.logout_item:
-                FancyToast.makeText(this, " Successfuly Logged out " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                FancyToast.makeText(this, " Successfully Logged out "
+                        + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_LONG,
+                        FancyToast.SUCCESS, false).show();
 
                 ParseUser.getCurrentUser().logOutInBackground(new LogOutCallback() {
                     @Override
@@ -89,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         finish();
                     }
                 });
+            case R.id.sendTweetItem:
+                startActivity(new Intent(MainActivity.this, SendTweet.class));
         }
 
 
@@ -98,5 +112,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        CheckedTextView checkedTextView = (CheckedTextView) view;
+        if (checkedTextView.isChecked()){
+            FancyToast.makeText(MainActivity.this, tUsers.get(position) + " is now followed", FancyToast.INFO, Toast.LENGTH_SHORT, false).show();
+            ParseUser.getCurrentUser().add("myfollower", tUsers.get(position));
+        }else {
+            FancyToast.makeText(MainActivity.this, tUsers.get(position) + " is now unfollowed", FancyToast.INFO, Toast.LENGTH_SHORT, false).show();
+
+            ParseUser.getCurrentUser().getList("myfollower").remove(tUsers.get(position));
+            List currentMyFollowerList = ParseUser.getCurrentUser().getList("myfollower");
+            ParseUser.getCurrentUser().remove("myfollower");
+            ParseUser.getCurrentUser().put("myfollower", currentMyFollowerList);
+        }
+        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    FancyToast.makeText(MainActivity.this, " Saved Changes", FancyToast.INFO, Toast.LENGTH_SHORT, false).show();
+                }else FancyToast.makeText(MainActivity.this,  e.getMessage(), FancyToast.INFO, Toast.LENGTH_SHORT, false).show();
+            }
+        });
     }
 }

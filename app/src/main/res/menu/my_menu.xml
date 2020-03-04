@@ -5,5 +5,10 @@
         android:id="@+id/logout_item"
         app:showAsAction="always"
         android:orderInCategory="101"/>
+    <item android:title="Send Tweet"
+        android:id="@+id/sendTweetItem"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_send_black_24dp"
+        android:orderInCategory="100"/>
 
 </menu>
