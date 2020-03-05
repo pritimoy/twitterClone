@@ -68,8 +68,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 public void done(ParseUser user, ParseException e) {
                                     if (user != null && e == null){
                                         startActivity(new Intent(Login.this, MainActivity.class));
-                                        FancyToast.makeText(Login.this,"Login successful"+user.getUsername(),
+                                        FancyToast.makeText(Login.this,"Login successful "+user.getUsername(),
                                                 FancyToast.LENGTH_SHORT,FancyToast.SUCCESS,false).show();
+                                        finish();
                                     }
                                     else {
                                         FancyToast.makeText(Login.this,"Login Failed",

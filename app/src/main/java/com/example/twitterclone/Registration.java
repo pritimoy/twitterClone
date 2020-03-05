@@ -82,6 +82,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                         FancyToast.SUCCESS, false).show();
                                 startActivity(new Intent(Registration.this,Login.class));
 
+                                finish();
+
                                 //progressDialog.dismiss();
                             } else {
                                 FancyToast.makeText(Registration.this, "There was a error "
